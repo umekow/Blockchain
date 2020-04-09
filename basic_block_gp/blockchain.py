@@ -3,7 +3,9 @@ import json
 from time import time
 from uuid import uuid4
 
-from flask import Flask, jsonify, request
+from flask import Flask
+from flask import jsonify
+from flask import request
 
 
 class Blockchain(object):
