@@ -31,17 +31,17 @@ class Blockchain(object):
         """
         if len(self.chain) > 0:
             block_string = json.dumps(self.last_block, sort_keys=True)
-            guess = f'{block_string}{proof}'.encode()
+            guess = f"{block_string}{proof}".encode()
             current_hash = hashlib.sha256(guess).hexdigest()
         else:
-            current_hash = ''
+            current_hash = ""
 
         block = {
-            'index': len(self.chain) + 1,
-            'timestamp': time(),
-            'transactions': self.current_transactions,
-            'proof': proof,
-            'previous_hash': previous_hash or self.hash(self.last_block())
+            "index": len(self.chain) + 1,
+            "timestamp": time(),
+            "transactions": self.current_transactions,
+            "proof": proof,
+            "previous_hash": previous_hash or self.hash(self.last_block()),
         }
 
         # Reset the current list of transactions
@@ -131,13 +131,13 @@ class Blockchain(object):
 app = Flask(__name__)
 
 # Generate a globally unique address for this node
-node_identifier = str(uuid4()).replace('-', '')
+node_identifier = str(uuid4()).replace("-", "")
 
 # Instantiate the Blockchain
 blockchain = Blockchain()
 
 
-@app.route('/mine', methods=['GET'])
+@app.route("/mine", methods=["GET"])
 def mine():
     # Run the proof of work algorithm to get the next proof
 
@@ -149,27 +149,26 @@ def mine():
 
     response = {
         # TODO: Send a JSON response with the new block
-        'message': 'New block forged',
-        'index': block['index'],
-        'transactions': block['transactions'],
-        'proof': block['proof'],
-        'previous_hash': block['previous_hash']
+        "message": "New block forged",
+        "index": block["index"],
+        "transactions": block["transactions"],
+        "proof": block["proof"],
+        "previous_hash": block["previous_hash"],
     }
 
     return jsonify(response), 200
 
 
-@app.route('/chain', methods=['GET'])
+@app.route("/chain", methods=["GET"])
 def full_chain():
     response = {
         # TODO: Return the chain and its current length
-
-        'length': len(blockchain.chain),
-        'chain': blockchain.chain
+        "length": len(blockchain.chain),
+        "chain": blockchain.chain,
     }
     return jsonify(response), 200
 
 
 # Run the program on port 5000
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
